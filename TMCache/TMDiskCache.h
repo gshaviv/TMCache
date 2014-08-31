@@ -23,7 +23,8 @@
  <ageLimit> will trigger a GCD timer to periodically to trim the cache with <trimToDate:>.
  */
 
-#import <Foundation/Foundation.h>
+@import Foundation;
+@import UIKit;
 
 @class TMDiskCache;
 

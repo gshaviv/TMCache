@@ -15,7 +15,7 @@
  a memory cache backed by a disk cache.
  */
 
-#import <Foundation/Foundation.h>
+@import UIKit;
 
 @class TMMemoryCache;
 
