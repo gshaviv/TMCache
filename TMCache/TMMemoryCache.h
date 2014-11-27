@@ -246,7 +246,7 @@ typedef void (^TMMemoryCacheObjectBlock)(TMMemoryCache *cache, NSString *key, id
  @param key A key to associate with the object. This string will be copied.
  @param cost An amount to add to the <totalCost>.
  */
-- (void)setObject:(id)object forKey:(NSString *)key withCost:(NSUInteger)cost;
+- (void)setObject:(id)object forKey:(NSString *)key cost:(NSUInteger)cost;
 
 /**
  Removes the object for the specified key. This method blocks the calling thread until the object

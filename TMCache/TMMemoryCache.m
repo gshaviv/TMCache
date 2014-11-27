@@ -67,7 +67,7 @@ NSString * const TMMemoryCachePrefix = @"com.tumblr.TMMemoryCache";
         _removeAllObjectsOnMemoryWarning = YES;
         _removeAllObjectsOnEnteringBackground = YES;
 
-        #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
+        #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0 && ISAPP
         for (NSString *name in @[UIApplicationDidReceiveMemoryWarningNotification, UIApplicationDidEnterBackgroundNotification]) {
             [[NSNotificationCenter defaultCenter] addObserver:self
                                                      selector:@selector(didObserveApocalypticNotification:)
@@ -82,6 +82,7 @@ NSString * const TMMemoryCachePrefix = @"com.tumblr.TMMemoryCache";
 + (instancetype)sharedCache
 {
     static id cache;
+#if ISAPP
     static dispatch_once_t predicate;
 
     dispatch_once(&predicate, ^{
@@ -89,6 +90,13 @@ NSString * const TMMemoryCachePrefix = @"com.tumblr.TMMemoryCache";
     });
 
     return cache;
+#else
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        cache = [[NSCache alloc] init];
+    });
+    return cache;
+#endif
 }
 
 #pragma mark - Private Methods -
@@ -484,10 +492,10 @@ NSString * const TMMemoryCachePrefix = @"com.tumblr.TMMemoryCache";
 
 - (void)setObject:(id)object forKey:(NSString *)key
 {
-    [self setObject:object forKey:key withCost:0];
+    [self setObject:object forKey:key cost:0];
 }
 
-- (void)setObject:(id)object forKey:(NSString *)key withCost:(NSUInteger)cost
+- (void)setObject:(id)object forKey:(NSString *)key cost:(NSUInteger)cost
 {
     if (!object || !key)
         return;
