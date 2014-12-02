@@ -82,7 +82,6 @@ NSString * const TMMemoryCachePrefix = @"com.tumblr.TMMemoryCache";
 + (instancetype)sharedCache
 {
     static id cache;
-#if ISAPP
     static dispatch_once_t predicate;
 
     dispatch_once(&predicate, ^{
@@ -90,13 +89,6 @@ NSString * const TMMemoryCachePrefix = @"com.tumblr.TMMemoryCache";
     });
 
     return cache;
-#else
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        cache = [[NSCache alloc] init];
-    });
-    return cache;
-#endif
 }
 
 #pragma mark - Private Methods -
