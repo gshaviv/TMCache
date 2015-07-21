@@ -132,26 +132,17 @@ NSString * const TMDiskCacheSharedName = @"TMDiskCacheShared";
 {
     if (![string length])
         return @"";
+    
+    return [string stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]];
 
-    CFStringRef static const charsToEscape = CFSTR(".:/");
-    CFStringRef escapedString = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
-                                                                        (__bridge CFStringRef)string,
-                                                                        NULL,
-                                                                        charsToEscape,
-                                                                        kCFStringEncodingUTF8);
-    return (__bridge_transfer NSString *)escapedString;
 }
 
 - (NSString *)decodedString:(NSString *)string
 {
     if (![string length])
         return @"";
-
-    CFStringRef unescapedString = CFURLCreateStringByReplacingPercentEscapesUsingEncoding(kCFAllocatorDefault,
-                                                                                          (__bridge CFStringRef)string,
-                                                                                          CFSTR(""),
-                                                                                          kCFStringEncodingUTF8);
-    return (__bridge_transfer NSString *)unescapedString;
+    
+    return [string stringByRemovingPercentEncoding];
 }
 
 #pragma mark - Private Trash Methods -
